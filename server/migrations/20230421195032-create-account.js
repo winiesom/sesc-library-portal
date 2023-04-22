@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('account', {
+    await queryInterface.createTable('accounts', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -11,11 +11,11 @@ module.exports = {
       },
       first_name: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: false
       },
       last_name: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: false
       },
       username: {
         type: Sequelize.STRING,
@@ -27,7 +27,7 @@ module.exports = {
         allowNull: false,
         unique: true
       },
-      student_id: {
+      account_id: {
         type: Sequelize.STRING,
         allowNull: false,
         unique: true
@@ -35,29 +35,28 @@ module.exports = {
       role_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        unique: true,
-        references:{
-          model: 'role',
-          key: 'id'
+        references: {
+          model: "roles",
+          key: "id"
         },
         onDelete: "cascade",
         onUpdate: "cascade"
       },
       password: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: false
       },
-      created_at: {
+      createdAt: {
         allowNull: false,
         type: Sequelize.DATE
       },
-      updated_at: {
+      updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
       }
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropAllTables();
+    await queryInterface.dropTable('accounts');
   }
 };
