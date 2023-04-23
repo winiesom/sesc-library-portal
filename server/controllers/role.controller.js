@@ -38,6 +38,8 @@ self.getAll = async (req, res) => {
 * @returns JSON
 */
 self.createRole = async (req, res) => {
+
+    // check for empty fields
     if (!req.body.role) {
         return res.status(400).send({
             success: false,
@@ -45,6 +47,20 @@ self.createRole = async (req, res) => {
         });
     }
     try {
+
+        //  check if role exists in db
+        const find_role = await role.findOne({ where: { role: req.body.role } });
+        console.log(find_role, 'roleeeeeeeeeeee');
+
+        // return 406 status code if role exists
+        if(find_role && find_role.role) {
+            return res.status(406).send({
+                success: false,
+                message: "Role already exists"
+            })
+        }
+
+        //  create new role in db
         const newRole = {
             role: req.body.role
         };
