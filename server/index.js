@@ -34,6 +34,12 @@ app.use("/login", login);
 const books = require("./routes/book.routes");
 app.use("/books", books);
 
+const borrow = require("./routes/borrow.routes");
+app.use("/borrow", borrow);
+
+const returnBook = require("./routes/returnBook.routes");
+app.use("/return", returnBook);
+
 
 
 app.listen(PORT, () => {

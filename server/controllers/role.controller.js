@@ -13,7 +13,6 @@ self.getAll = async (req, res) => {
     try {
         let data = await role.findAll({});
         if (data) {
-            console.log(data)
             return res.status(200).json({
                 success: true,
                 count: data.length,
@@ -21,7 +20,6 @@ self.getAll = async (req, res) => {
             })
         }
     } catch (error) {
-        console.log(error)
         res.status(400).json({
             success: false,
             error: error
@@ -50,7 +48,6 @@ self.createRole = async (req, res) => {
 
         //  check if role exists in db
         const find_role = await role.findOne({ where: { role: req.body.role } });
-        console.log(find_role, 'roleeeeeeeeeeee');
 
         // return 406 status code if role exists
         if(find_role && find_role.role) {
