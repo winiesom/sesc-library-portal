@@ -23,9 +23,11 @@ self.getAll = async (req, res) => {
 
         let data = await borrow.findAll({
             where: {
-                returned: false
+                returned: false,
             }
         });
+
+
         if(data) {
             return res.status(200).json({
                 success: true,
@@ -55,9 +57,11 @@ self.getAllStudent = async (req, res) => {
         let data = await borrow.findAll({
             where: {
                 account_id: req.account_id,
-                returned: false
+                // returned: false
             }
         });
+
+
         if(data) {
             return res.status(200).json({
                 success: true,
@@ -120,14 +124,13 @@ try {
 
 
 
-    const find_book = await book.findOne({ where: { id:book_id, copies: { [Op.gt]: 0 } } })
+    const find_book = await book.findOne({ where: { id:book_id } })
     if(!find_book) {
         return res.status(404).send({
             success: false,
             message: "The book you are trying to borrow does not exist"
           })
     }
-  
 
     const find_borrowed_book = await borrow.findOne({ 
         where: { 
@@ -143,13 +146,21 @@ try {
           message: "You already borrowed this book"
         });
       }
-      
+
+    const out_of_stock = await book.findOne({ where: { id:book_id, copies: { [Op.gt]: 0 } } })
+    if(!out_of_stock) {
+        return res.status(404).send({
+            success: false,
+            message: "The book you are trying to borrow is out of stock"
+          })
+    }
     
 
     const newBorrow = {
         account_id,
         book_id,
-        returned
+        returned,
+        overdue: null
     }
 
     let data = await borrow.create(newBorrow)

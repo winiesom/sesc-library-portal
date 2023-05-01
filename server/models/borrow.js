@@ -16,7 +16,8 @@ module.exports = (sequelize, DataTypes) => {
   borrow.init({
     account_id: DataTypes.STRING,
     book_id: DataTypes.INTEGER,
-    returned: DataTypes.BOOLEAN
+    returned: DataTypes.BOOLEAN,
+    overdue: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'borrow',

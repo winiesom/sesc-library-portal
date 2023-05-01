@@ -1,0 +1,122 @@
+.book-search {
+    width: 100%;
+    margin-bottom: 20px;
+    height: 35px;
+    padding-left: 10px;
+    border: 1px solid #662D91;
+    border-radius: 4px;
+    outline: #662D91;
+    float: right;
+    background: rgba(107, 71, 134, 0.144);
+}
+
+.book-search:focus {
+    border: 2px solid #662D91;
+}
+
+
+.action-icon {
+    width: 18px !important;
+    height: 18px !important;
+    margin-left: 8px !important;
+    cursor: pointer;
+}
+
+.action-icons {
+    display: flex;
+    flex-direction: row ;
+}
+
+.action-fab {
+    background: #662D91 !important;
+    color: #fff !important;
+    margin-bottom: 15px !important;
+}
+.action-fab:hover {
+    background:  rgb(155, 107, 192) !important;
+}
+
+.fab-icon {
+    color: #fff !important;
+}
+
+.textfield-grid-container {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.textfield {
+    height: 35px !important;
+    /* margin-left: -12px !important; */
+}
+
+.dialog-title {
+    text-align: left;
+    font: normal normal bold 12px/30px Poppins, sans-serif;
+    letter-spacing: 0px;
+    color: #222222;
+    opacity: 1;
+}
+
+.warning {
+    display: block;
+    text-align: left;
+    font: normal normal normal 12px/18px Poppins, sans-serif;
+}
+
+.customBtn-del {
+    width: 40%;
+}
+
+.customBtn-del:hover {
+    opacity: 0.5 !important;
+}
+
+.tabs-paper {
+    width: 90%; 
+    margin: 0 auto; 
+    margin-top: 30px; 
+    padding: 5px 0px 10px 0px;
+    flex-grow: 1;
+    background: #fff; 
+    display: flex; 
+    height: auto;
+    overflow: scroll;
+}
+@media only screen and (min-width: 150px) and (max-width: 600px) {
+    .tabs-paper {
+        width: 100%;
+    }
+}
+
+
+.tabs-label-container {
+    width: auto;
+}
+@media only screen and (min-width: 150px) and (max-width: 600px) {
+    .tabs-label-container {
+        width: 30%;
+    }
+}
+.tabs-panel-container {
+    width: 100%;
+    overflow: scroll;
+}
+@media only screen and (min-width: 150px) and (max-width: 600px) {
+    .tabs-panel-container {
+        width: 70%;
+    }
+}
+.tab-title {
+    color: #888 !important;
+    text-align: left !important;
+    display: flex !important;
+    align-items: flex-start !important;
+}
+.tab-title:focus {
+    color: #662D91 !important;
+}
+
+.tab-content {
+    width: 100% !important;
+}

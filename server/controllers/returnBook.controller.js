@@ -1,6 +1,7 @@
 const self = {};
 const { account, book, role, borrow } = require("../models");
 const { Op } = require('sequelize');
+const moment = require('moment');
 
 
 /**
@@ -95,7 +96,7 @@ self.returnBook = async (req, res) => {
     }
 
     const find_max_days = await book.findOne({ where: { id: book_id } });
-
+    let max_days;
     if(find_max_days) {
         max_days = find_max_days.max_days
     }
@@ -139,20 +140,65 @@ self.returnBook = async (req, res) => {
         });
       }
 
-    const newReturn = {
-        account_id,
-        book_id,
-        returned
+      
+      const find_date = await borrow.findOne({
+          where: {
+              book_id:book_id
+            }
+        })
+        
+        if(find_date) {
+            const createdAt = moment(find_date.createdAt);
+            const today = moment();
+            
+            const difference = today.diff(createdAt, 'days');
+            const daysDiff = difference - max_days
+            
+            console.log(difference, 'diff')
+            console.log(max_days, 'max days')
+            console.log(difference - max_days, 'difference minus max days')
+            
+            if(difference > max_days) {
+                const attemptedReturn = {
+                    account_id,
+                    book_id,
+                    returned:true,
+                    overdue: daysDiff
+                }
+                const updatedBook = {
+                    ...find_book.toJSON(),
+                    copies: find_book.copies + 1
+                };
+                await book.update(updatedBook, { where: { id: book_id } });  
+                await borrow.update(attemptedReturn, { where : { book_id: book_id } });
+
+                return res.json({overdue_days:daysDiff, message: 'you did not return this book on the expected date'})
+            } else {
+            const newReturn = {
+                account_id,
+                book_id,
+                returned
+            }
+            const updatedBook = {
+                ...find_book.toJSON(),
+                copies: find_book.copies + 1
+            };
+            await book.update(updatedBook, { where: { id: book_id } });  
+            await borrow.update(newReturn, { where : { book_id: book_id } });
+            return res.json({data: newReturn, max_days: max_days});
+
+        }
     }
-    const updatedBook = {
-        ...find_book.toJSON(),
-        copies: find_book.copies + 1
-      };
-    await book.update(updatedBook, { where: { id: book_id } });  
 
-    await borrow.update(newReturn, { where : { book_id: book_id } });
+    // const updatedBook = {
+    //     ...find_book.toJSON(),
+    //     copies: find_book.copies + 1
+    //   };
+    // await book.update(updatedBook, { where: { id: book_id } });  
 
-    return res.json({data: newReturn, max_days: max_days});
+    // await borrow.update(newReturn, { where : { book_id: book_id } });
+
+    // return res.json({data: newReturn, max_days: max_days});
 
         
     } catch (error) {

@@ -13,17 +13,23 @@ const { Op } = require('sequelize');
  */
 self.getAll = async (req, res) => {
   try {
-    const { page = 1, pageSize = 10, search = '' } = req.query;
-    const offset = (page - 1) * pageSize;
+    // const { page = 0, pagesize = 5, search = '' } = req.query;
+    const { search = '' } = req.query;
+    // const offset = page * pagesize;
+    // if (offset < 0 ){
+    //   offset = 0;
+    // }
 
   let data = await book.findAndCountAll({
     where: {
-      title: {
-        [Op.like]: `%${search}%`
-      }
+      [Op.or]: [
+        { title: { [Op.iLike]: `%${search}%` } },
+        { isbn: { [Op.iLike]: `%${search}%` } },
+        { author: { [Op.iLike]: `%${search}%` } },
+      ],
     },
-    limit: pageSize,
-    offset: offset
+    // limit: pagesize,
+    // offset: offset
   });
 
 
@@ -76,7 +82,7 @@ self.addBook = async (req, res) => {
     if(find_book) {
       return res.status(406).send({
         success: false,
-        message: "Book already exists"
+        message: "Book already exists with this ISBN"
       })
     }
 
@@ -107,7 +113,6 @@ self.updateBook = async (req, res) => {
   
   const { id } = req.params;
   const updatedBook = req.body;
-  console.log(updatedBook, 'jajaja')
 
   
   try {
@@ -128,12 +133,29 @@ self.updateBook = async (req, res) => {
         message: `Book with id ${id} does not exist`
       });
     }
+
+     // Check if the ISBN being sent already belongs to another book
+     const { isbn } = updatedBook;
+     if (isbn && isbn !== bookRecord.isbn) {
+       const existingBook = await book.findOne({
+         where: { isbn },
+         attributes: ['id']
+       });
+       if (existingBook && existingBook.id !== bookRecord.id) {
+         return res.status(406).send({
+           success: false,
+           message: "ISBN already belongs to another book"
+         });
+       }
+     }
+    
     
     await book.update(updatedBook, { where: { id } });
     
     const updatedBookRecord = await book.findOne({ where: { id } });
     return res.json(updatedBookRecord);
   } catch (error) {
+    console.log(error)
     return res.status(500).json({
       message: "Internal server error",
       error: error.message

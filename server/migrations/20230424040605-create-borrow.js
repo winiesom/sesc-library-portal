@@ -33,6 +33,9 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         allowNull: false
       },
+      overdue: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
