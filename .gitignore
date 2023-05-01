@@ -1,2 +1,3 @@
 server/config/config.json
 .env
+server/node_modules
