@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Routes, Route, Link, Navigate } from 'react-router-dom';
+import { Routes, Route, Link, Navigate, useNavigate } from 'react-router-dom';
 import Cookies from "js-cookie";
 import { styled, useTheme } from '@mui/material/styles';
 import {
@@ -111,8 +111,8 @@ const Layout = () => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const { user } = useSelector((state) => state.auth);
-
   const { isLoggedIn } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
   
   useEffect(() => {
     if (!isLoggedIn) return Navigate("/");
@@ -128,7 +128,8 @@ const Layout = () => {
   };
 
   const handleLogout = () => {
-    
+    Cookies.remove("token");
+    window.location.reload();
   }
 
 

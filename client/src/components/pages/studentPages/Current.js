@@ -65,6 +65,7 @@ function createData(sn, isbn, author, title, year, borrowed, returnbook) {
 const Current = () => {
   const [loading, setLoading] = useState(false);
   const [serverError, setServerError] = useState(false);
+  const [error, setError] = useState(false);
   const [serverSuccess, setServerSuccess] = useState(false);
   const { message } = useSelector((state) => state.message);
   const { borrowed } = useSelector((state) => state.borrowedBooks);
@@ -169,7 +170,7 @@ const Current = () => {
       <Snackbars
           variant="error"
           handleClose={handleCloseSnack}
-          message={message}
+          message={message || "Network error"}
           isOpen={serverError}
       />
 

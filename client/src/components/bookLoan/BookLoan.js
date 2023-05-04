@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import { Typography, Tabs, Tab, Box, Paper } from '@mui/material';
 import {useSelector} from 'react-redux';
@@ -54,22 +54,40 @@ const BookLoan = () => {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-    if(user && user.data.role_id === 1  && newValue === 0) {
+    // if(user && user.data.role_id === 1  && newValue === 0) {
+    //   setTitle("Students with loan")
+    // } else if(user && user.data.role_id === 1  && newValue === 1) {
+    //   setTitle("Books on loan")
+    // } else if(user && user.data.role_id === 1  && newValue === 2) {
+    //   setTitle("Overdue loans")
+    // } else if(user && user.data.role_id === 2  && newValue === 0) {
+    //   setTitle("Currently borrowed books")
+    // } else if(user && user.data.role_id === 2  && newValue === 1) {
+    //   setTitle("Overdue borrow")
+    // } else if(user && user.data.role_id === 2  && newValue === 2) {
+    //   setTitle("Borrow history")
+    // } else {
+    //   setTitle("Borrow activities")
+    // }
+  };
+
+  useEffect(() => {
+    if(user && user.data.role_id === 1  && value === 0) {
       setTitle("Students with loan")
-    } else if(user && user.data.role_id === 1  && newValue === 1) {
+    } else if(user && user.data.role_id === 1  && value === 1) {
       setTitle("Books on loan")
-    } else if(user && user.data.role_id === 1  && newValue === 2) {
+    } else if(user && user.data.role_id === 1  && value === 2) {
       setTitle("Overdue loans")
-    } else if(user && user.data.role_id === 2  && newValue === 0) {
+    } else if(user && user.data.role_id === 2  && value === 0) {
       setTitle("Currently borrowed books")
-    } else if(user && user.data.role_id === 2  && newValue === 1) {
+    } else if(user && user.data.role_id === 2  && value === 1) {
       setTitle("Overdue borrow")
-    } else if(user && user.data.role_id === 2  && newValue === 2) {
+    } else if(user && user.data.role_id === 2  && value === 2) {
       setTitle("Borrow history")
     } else {
       setTitle("Borrow activities")
     }
-  };
+  })
 
   
   return (

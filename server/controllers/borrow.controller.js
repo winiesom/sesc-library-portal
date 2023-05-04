@@ -70,6 +70,7 @@ self.getAllStudent = async (req, res) => {
             })
         }
     } catch (error) {
+        console.log(error, 'errrry')
         res.status(400).json({
             success: false,
             error: error
@@ -172,8 +173,6 @@ try {
       };
       await book.update(updatedBook, { where: { id: book_id } });
   
-      console.log(updatedBook, 'updatedBook')
-
     return res.status(201).json({
         success: true,
         data: data,

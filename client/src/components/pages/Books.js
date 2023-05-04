@@ -53,8 +53,8 @@ const columns = [
   { id: 'isbn', label: 'ISBN', align: 'left', minWidth: 170 },
   { id: 'title', label: 'Title', align: 'left', minWidth: 220 },
   { id: 'author', label: 'Author', align: 'left', minWidth: 170 },
-  { id: 'year', label: 'Year', align: 'left' },
-  { id: 'action', label: 'Action', align:'left' },
+  // { id: 'year', label: 'Year', align: 'left' },
+  // { id: 'action', label: 'Action', align:'left' },
 ];
 const adminColumns = [
   { id: 'sn', label: 'SN', align: 'left' },
@@ -175,9 +175,9 @@ const Books = () => {
         row.isbn,
         row.title,
         row.author,
-        row.year,
+        user && user.data.role_id === 1 ? row.year : "" ,
         user && user.data.role_id === 1 ? row.copies : null,
-        user && user.data.role_id === 2 ? <Borrow row={row} /> : ""
+        // user && user.data.role_id === 2 ? <Borrow row={row} /> : ""
       );
     }): []
   : [];
@@ -201,11 +201,12 @@ const Books = () => {
       />
       
       <Grid container spacing={2}>
-        { user && user.data.role_id === 1 ? 
-        <Grid item xs={12} sm={12} md={4}> <div className="table-title">Books</div> </Grid> : 
-        <Grid item xs={12} sm={12} md={6}> <div className="table-title">Books</div> </Grid> }
-        
-        { user && user.data.role_id === 1 ? 
+        {/* { user && user.data.role_id === 1 ?  */}
+        <Grid item xs={12} sm={12} md={4}> <div className="table-title">Books</div> </Grid> 
+        {/* // : 
+        // <Grid item xs={12} sm={12} md={6}> <div className="table-title">Books</div> </Grid> }
+         */}
+        {/* { user && user.data.role_id === 1 ?  */}
         <Grid item xs={12} sm={12} md={4}>
           <input 
           type="search" 
@@ -218,7 +219,8 @@ const Books = () => {
           onClick={handleClick}
           className="book-search"
           />
-        </Grid> : 
+        </Grid> 
+        {/* : 
         <Grid item xs={12} sm={12} md={6}>
           <input 
           type="search" 
@@ -231,10 +233,12 @@ const Books = () => {
           onClick={handleClick}
           className="book-search"
           />
-        </Grid> }
+        </Grid> } */}
         
         { user && user.data.role_id === 1 ? 
-        <Grid item xs={12} sm={12} md={4} display="flex" justifyContent="flex-end"> <AddBook /> </Grid> : "" }
+        <Grid item xs={12} sm={12} md={4} display="flex" justifyContent="flex-end"> <AddBook /> </Grid> :  
+        <Grid item xs={12} sm={12} md={4} display="flex" justifyContent="flex-end"> <Borrow /> </Grid> 
+        }
         
         </Grid>
         

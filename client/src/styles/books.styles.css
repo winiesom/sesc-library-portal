@@ -44,6 +44,10 @@
     padding: 0 !important;
     margin: 0 !important;
 }
+.borrow-container {
+    padding: 0 !important;
+    margin-top: 20px !important;
+}
 
 .textfield {
     height: 35px !important;
@@ -119,4 +123,36 @@
 
 .tab-content {
     width: 100% !important;
+}
+
+.textfield-custom {
+    width: 95%;
+    margin: 0px 15px 15px 10px;
+    height: 35px;
+    border: 1px solid #eae6ec;
+    border-radius: 4px;
+    padding: 10px;
+}
+.textfield-custom:hover {
+    border: 1px solid #662D91;
+}
+.textfield-custom:focus {
+    border: 1px solid #662D91;
+    outline: #662D91;
+}
+
+.textfield-custom-label {
+    font-size: 12px;
+    font-weight: 600;
+    margin: 15px 0px 3px 10px !important;
+    color: #777;
+}
+
+.borrow-textfield-custom {
+    width: 100%;
+    /* margin: 0px 15px 15px 10px; */
+    height: 35px;
+    border: 1px solid #eae6ec;
+    border-radius: 4px;
+    padding: 10px;
 }

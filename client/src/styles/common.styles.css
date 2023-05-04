@@ -104,6 +104,8 @@
     flex-direction: column !important;
     justify-content: center;
     align-items: center;
+    background: #fff;
+    box-shadow: none;
 }
 
 .more-icon-menu {

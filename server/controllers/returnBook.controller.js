@@ -190,16 +190,6 @@ self.returnBook = async (req, res) => {
         }
     }
 
-    // const updatedBook = {
-    //     ...find_book.toJSON(),
-    //     copies: find_book.copies + 1
-    //   };
-    // await book.update(updatedBook, { where: { id: book_id } });  
-
-    // await borrow.update(newReturn, { where : { book_id: book_id } });
-
-    // return res.json({data: newReturn, max_days: max_days});
-
         
     } catch (error) {
         return res.status(500).json({

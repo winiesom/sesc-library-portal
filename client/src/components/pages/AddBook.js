@@ -1,9 +1,14 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
+import axios from 'axios';
+import moment from "moment";
+
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { ThreeDots } from "react-loader-spinner";
 import { TextField } from "../../assets/textfields";
+import {PuffSpinner} from '../../assets/spinner';
+
 
 import { useDispatch, useSelector } from "react-redux";
 
@@ -34,11 +39,16 @@ import "../../styles/common.styles.css"
 
 
 
-const AddBook = ({row}) => {
+const AddBook = () => {
+  const [isbnValue, setIsbnValue] = useState({isbnNum: ""})
+  const [isbnResult, setIsbnResult] = useState(null)
+  const [showIsbnResult, setShowIsbnResult] = useState(null)
+  const [bookIsbn, setBookIsbn] = useState([])
   const [open, setOpen] = useState(false);
   const [serverError, setServerError] = useState(false);
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isbnLoading, setIsbnLoading] = useState(false);
   const { message } = useSelector((state) => state.message);
   const dispatch = useDispatch();
 
@@ -50,9 +60,9 @@ const AddBook = ({row}) => {
   const handleSuccessClose = () => setSuccess(false);
 
 
-   // form validation rules
+  //  form validation rules
    const validationSchema = Yup.object().shape({
-    isbn: Yup.string().required("ISBN is required"),
+    // isbn: Yup.string().required("ISBN is required"),
     title: Yup.string().required("Title is required"),
     author: Yup.string().required("Author is required"),
     year: Yup.string().required("Year is required"),
@@ -66,15 +76,47 @@ const AddBook = ({row}) => {
       register,
       handleSubmit,
       formState: { errors },
-      reset
+      reset,
+      setValue
     } = useForm(formOptions);
+
+    const handleSearchBook = async (e) => {
+      const search = e.target.value;
+      setBookIsbn(search)
+      if (e.key === "Enter") {
+        setIsbnLoading(true)
+        try {
+          const response = await axios.get(`http://openlibrary.org/api/books?bibkeys=ISBN:${search}&jscmd=details&format=json`)
+          const res = await response
+          const result = res !== "" || res !== undefined || res !== null || res !== [] ? res : []
+          setIsbnLoading(false)
+          setIsbnResult(result && result.data[`ISBN:${search}`].details)
+          console.log(res)
+          console.log(isbnResult, 'isbn result')
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    }
+
+  
+
+    useEffect(() => {
+      if (isbnResult && isbnResult !== null ) {
+        setValue("isbn", bookIsbn);
+        setValue("title", isbnResult !== null && isbnResult.title);
+        setValue("author", isbnResult !== null && isbnResult.authors && isbnResult.authors[0].name || isbnResult.publishers[0]);
+        setValue("year", isbnResult !== null && moment(isbnResult.publish_date).format('YYYY'));
+      }
+    }, [isbnResult, bookIsbn, setValue]);
+    
 
     const onSubmit = (data) => {
       const { isbn, title, author, year, copies, max_days } = data;
       setLoading(true);
     
       const newBook = {
-        isbn,
+        isbn: isbnValue.isbnNum,
         title,
         author,
         year,
@@ -87,9 +129,11 @@ const AddBook = ({row}) => {
           setLoading(false);
           if (data.payload !== undefined) {
             setOpen(false);
+            setIsbnValue({isbnNum: ""})
+            setIsbnResult(null)
             // dispatch(getBooks({ page: 0, pagesize: 10, search: "" }))
-            dispatch(getBooks({ search: "" }))
             reset();
+            dispatch(getBooks({ search: "" }))
           }
         })
         .catch(() => {
@@ -116,6 +160,12 @@ const AddBook = ({row}) => {
         message={message}
         isOpen={(message !== undefined && message !== "") || (serverError)}
       />
+      {/* <Snackbars
+        variant="error"
+        handleClose={handleCloseSnack}
+        message="Book not found"
+        isOpen={isbnResult === null}
+      /> */}
 
       <MenuItem
         disableRipple
@@ -128,7 +178,7 @@ const AddBook = ({row}) => {
           size="small"
           aria-label="add"
           className="action-fab"
-          onClick={handleClose}
+          // onClick={handleClose}
         >
           <AddIcon className="fab-icon"  />
           </Fab>
@@ -166,120 +216,156 @@ const AddBook = ({row}) => {
           <CloseIcon />
         </Fab>
 
-        <form onSubmit={handleSubmit(onSubmit)}>
-        <Grid container spacing={0} className="textfield-grid-container">
-          <Grid item xs={12} sx={{marginLeft: 1}}>
-            <div className="table-title">Book details</div>
+          <Grid container spacing={0} className="textfield-grid-container">
+            <Grid item xs={12} className="textfield-custom-label">
+              Enter ISBN
+            </Grid>
+          <Grid item xs={12}>
+            <input 
+             id="isbnNum"
+             type="text"
+             name="isbnNum"
+             value={isbnValue.isbnNum}
+             onChange={(e) => setIsbnValue({ ...isbnValue, isbnNum: e.target.value })}
+             className="textfield-custom"
+             onKeyPress={handleSearchBook}
+             />
+             </Grid>
           </Grid>
 
-          <Grid item xs={12}>
-            <TextField 
-              id="isbn"
-              htmlFor="isbn"
-              label="ISBN"
-              name="isbn"
-              className="textfield"
-              error={errors.isbn ? true : false}
-              helper={errors.isbn?.message}
-              register={register}
-              disabled={loading}
-            />
-          </Grid>
+ {
+   isbnLoading ?  
+   <Grid item xs={12} className="table-tools-container">
+   <PuffSpinner 
+   height={50} 
+   width={50} 
+   color={Colors.primary}
+   label='Loading...'
+   />
+ </Grid> : 
+   isbnResult !== null && 
+<form onSubmit={handleSubmit(onSubmit)}>
+<Grid container spacing={0} className="textfield-grid-container">
+{/* <Grid item xs={12} sx={{marginLeft: 1}}>
+  <div className="table-title">Book details</div>
+</Grid> */}
 
-          <Grid item xs={12}>
-            <TextField 
-              id="title"
-              htmlFor="title"
-              label="Title"
-              name="title"
-              className="textfield"
-              error={errors.title ? true : false}
-              helper={errors.title?.message}
-              register={register}
-              disabled={loading}
-            />
-          </Grid>
+{/* 
+<Grid item xs={12}>
+  <TextField 
+    id="isbn"
+    htmlFor="isbn"
+    label="ISBN"
+    name="isbn"
+    className="textfield"
+    error={errors.isbn ? true : false}
+    helper={errors.isbn?.message}
+    register={register}
+    disabled={loading}
+  />
+</Grid> */}
 
-          <Grid item xs={12}>
-            <TextField 
-              id="author"
-              htmlFor="author"
-              label="Author"
-              name="author"
-              className="textfield"
-              error={errors.author ? true : false}
-              helper={errors.author?.message}
-              register={register}
-              disabled={loading}
-            />
-          </Grid>
+<Grid item xs={12}>
+  <TextField 
+    id="title"
+    htmlFor="title"
+    label="Title"
+    name="title"
+    className="textfield"
+    error={errors.title ? true : false}
+    helper={errors.title?.message}
+    register={register}
+    disabled={loading}
+  />
+</Grid>
 
-          <Grid item xs={12}>
-            <TextField 
-              id="year"
-              htmlFor="year"
-              label="Year"
-              name="year"
-              className="textfield"
-              type="number"
-              min="1990"
-              max={currentYear}
-              error={errors.year ? true : false}
-              helper={errors.year?.message}
-              register={register}
-              disabled={loading}
-            />
-          </Grid>
+<Grid item xs={12}>
+  <TextField 
+    id="author"
+    htmlFor="author"
+    label="Author"
+    name="author"
+    className="textfield"
+    error={errors.author ? true : false}
+    helper={errors.author?.message}
+    register={register}
+    disabled={loading}
+  />
+</Grid>
 
-          <Grid item xs={12}>
-            <TextField 
-              id="copies"
-              htmlFor="copies"
-              label="Copies"
-              name="copies"
-              className="textfield"
-              type="number"
-              error={errors.copies ? true : false}
-              helper={errors.copies?.message}
-              register={register}
-              disabled={loading}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField 
-              id="max_days"
-              htmlFor="max_days"
-              label="Maximum lending days"
-              name="max_days"
-              className="textfield"
-              type="number"
-              error={errors.max_days ? true : false}
-              helper={errors.max_days?.message}
-              register={register}
-              disabled={loading}
-            />
-          </Grid>
+<Grid item xs={12}>
+  <TextField 
+    id="year"
+    htmlFor="year"
+    label="Year"
+    name="year"
+    className="textfield"
+    type="number"
+    // min="1990"
+    // max={currentYear}
+    error={errors.year ? true : false}
+    helper={errors.year?.message}
+    register={register}
+    disabled={loading}
+  />
+</Grid>
 
 
-          <Grid item xs={12}>
-          <CustomButton
-             variant="contained"
-             sx={{ background: Colors.primary}}
-             className="customBtn"
-             endIcon={ <DownloadDoneIcon />} 
-             type="submit" 
-             disabled={loading}
-            >
-              {loading ? (
-                <ThreeDots color="#2e3192" height={15} width={30} />
-              ) : 
-              "Add book"
-              }
-            </CustomButton>
-          </Grid>
-        </Grid>
-        </form>
-          
+
+<Grid item xs={12}>
+  <TextField 
+    id="copies"
+    htmlFor="copies"
+    label="Copies"
+    name="copies"
+    className="textfield"
+    type="number"
+    error={errors.copies ? true : false}
+    helper={errors.copies?.message}
+    register={register}
+    disabled={loading}
+  />
+</Grid>
+<Grid item xs={12}>
+  <TextField 
+    id="max_days"
+    htmlFor="max_days"
+    label="Maximum lending days"
+    name="max_days"
+    className="textfield"
+    type="number"
+    error={errors.max_days ? true : false}
+    helper={errors.max_days?.message}
+    register={register}
+    disabled={loading}
+  />
+</Grid>
+
+
+<Grid item xs={12}>
+<CustomButton
+   variant="contained"
+   sx={{ background: Colors.primary}}
+   className="customBtn"
+   endIcon={ <DownloadDoneIcon />} 
+   type="submit" 
+   disabled={loading}
+  >
+    {loading ? (
+      <ThreeDots color="#2e3192" height={15} width={30} />
+    ) : 
+    "Add book"
+    }
+  </CustomButton>
+</Grid>
+
+</Grid>
+</form>
+ }
+
+ 
+
+
       </Dialog>
 
     </div>
