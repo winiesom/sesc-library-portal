@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useMemo} from 'react';
+import React, { useState } from 'react';
 import { ThreeDots } from "react-loader-spinner";
 
 import { useDispatch, useSelector } from "react-redux";

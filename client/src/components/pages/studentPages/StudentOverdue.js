@@ -4,8 +4,6 @@ import { styled } from '@mui/material/styles';
 import { Grid, Divider, Table, TableBody, TableContainer, TableHead, TableRow } from '@mui/material';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import FolderOffIcon from '@mui/icons-material/FolderOff';
-
-
 import {PuffSpinner} from '../../../assets/spinner';
 import {Colors} from '../../../assets/themes/colors';
 import Snackbars from "../../../assets/snackbar";
@@ -65,18 +63,10 @@ const StudentOverdue = () => {
   const [loading, setLoading] = useState(false);
   const [serverError, setServerError] = useState(false);
   const [serverSuccess, setServerSuccess] = useState(false);
-  const [isCopied, setIsCopied] = useState(false);
   const { message } = useSelector((state) => state.message);
   const { borrowed } = useSelector((state) => state.borrowedBooks);
   const books = useSelector((state) => state.books.data.data.rows);
-
   const dispatch = useDispatch();
-
-  const handleCopy = (text) => {
-    navigator.clipboard.writeText(text);
-    setIsCopied(true);
-  };
-
   const ago = "ago"
 
   moment.updateLocale('en', {

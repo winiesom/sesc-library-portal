@@ -13,11 +13,6 @@ instance.interceptors.request.use(
     if (token) {
       config.headers["Authorization"] = token;
     }
-    // if (config.url === "login") {
-    //   config.headers["Content-Type"] = "application/x-www-form-urlencoded";
-    // } else {
-    //   config.headers["Content-Type"] = "application/json";
-    // }
     config.headers["Content-Type"] = "application/json";
 
     

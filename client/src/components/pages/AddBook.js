@@ -42,7 +42,6 @@ import "../../styles/common.styles.css"
 const AddBook = () => {
   const [isbnValue, setIsbnValue] = useState({isbnNum: ""})
   const [isbnResult, setIsbnResult] = useState(null)
-  const [showIsbnResult, setShowIsbnResult] = useState(null)
   const [bookIsbn, setBookIsbn] = useState([])
   const [open, setOpen] = useState(false);
   const [serverError, setServerError] = useState(false);
@@ -52,8 +51,6 @@ const AddBook = () => {
   const { message } = useSelector((state) => state.message);
   const dispatch = useDispatch();
 
-  const currentYear = new Date().getFullYear();
-
   const handleClose = () => setOpen(false);
   const handleClickOpen = () => setOpen(true);
   const handleCloseSnack = () => setServerError(false);
@@ -62,7 +59,6 @@ const AddBook = () => {
 
   //  form validation rules
    const validationSchema = Yup.object().shape({
-    // isbn: Yup.string().required("ISBN is required"),
     title: Yup.string().required("Title is required"),
     author: Yup.string().required("Author is required"),
     year: Yup.string().required("Year is required"),
@@ -105,14 +101,13 @@ const AddBook = () => {
       if (isbnResult && isbnResult !== null ) {
         setValue("isbn", bookIsbn);
         setValue("title", isbnResult !== null && isbnResult.title);
-        setValue("author", isbnResult !== null && isbnResult.authors && isbnResult.authors[0].name || isbnResult.publishers[0]);
+        setValue("author", isbnResult !== null && isbnResult.authors ? isbnResult.authors[0].name : isbnResult.publishers[0]);
         setValue("year", isbnResult !== null && moment(isbnResult.publish_date).format('YYYY'));
       }
     }, [isbnResult, bookIsbn, setValue]);
     
-
     const onSubmit = (data) => {
-      const { isbn, title, author, year, copies, max_days } = data;
+      const { title, author, year, copies, max_days } = data;
       setLoading(true);
     
       const newBook = {
@@ -131,7 +126,6 @@ const AddBook = () => {
             setOpen(false);
             setIsbnValue({isbnNum: ""})
             setIsbnResult(null)
-            // dispatch(getBooks({ page: 0, pagesize: 10, search: "" }))
             reset();
             dispatch(getBooks({ search: "" }))
           }
@@ -160,12 +154,6 @@ const AddBook = () => {
         message={message}
         isOpen={(message !== undefined && message !== "") || (serverError)}
       />
-      {/* <Snackbars
-        variant="error"
-        handleClose={handleCloseSnack}
-        message="Book not found"
-        isOpen={isbnResult === null}
-      /> */}
 
       <MenuItem
         disableRipple
@@ -178,7 +166,6 @@ const AddBook = () => {
           size="small"
           aria-label="add"
           className="action-fab"
-          // onClick={handleClose}
         >
           <AddIcon className="fab-icon"  />
           </Fab>
@@ -246,24 +233,6 @@ const AddBook = () => {
    isbnResult !== null && 
 <form onSubmit={handleSubmit(onSubmit)}>
 <Grid container spacing={0} className="textfield-grid-container">
-{/* <Grid item xs={12} sx={{marginLeft: 1}}>
-  <div className="table-title">Book details</div>
-</Grid> */}
-
-{/* 
-<Grid item xs={12}>
-  <TextField 
-    id="isbn"
-    htmlFor="isbn"
-    label="ISBN"
-    name="isbn"
-    className="textfield"
-    error={errors.isbn ? true : false}
-    helper={errors.isbn?.message}
-    register={register}
-    disabled={loading}
-  />
-</Grid> */}
 
 <Grid item xs={12}>
   <TextField 
@@ -301,8 +270,6 @@ const AddBook = () => {
     name="year"
     className="textfield"
     type="number"
-    // min="1990"
-    // max={currentYear}
     error={errors.year ? true : false}
     helper={errors.year?.message}
     register={register}
@@ -362,13 +329,8 @@ const AddBook = () => {
 </Grid>
 </form>
  }
-
- 
-
-
-      </Dialog>
-
-    </div>
+</Dialog>
+</div>
   )
 };
 

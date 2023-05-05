@@ -54,21 +54,6 @@ const BookLoan = () => {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-    // if(user && user.data.role_id === 1  && newValue === 0) {
-    //   setTitle("Students with loan")
-    // } else if(user && user.data.role_id === 1  && newValue === 1) {
-    //   setTitle("Books on loan")
-    // } else if(user && user.data.role_id === 1  && newValue === 2) {
-    //   setTitle("Overdue loans")
-    // } else if(user && user.data.role_id === 2  && newValue === 0) {
-    //   setTitle("Currently borrowed books")
-    // } else if(user && user.data.role_id === 2  && newValue === 1) {
-    //   setTitle("Overdue borrow")
-    // } else if(user && user.data.role_id === 2  && newValue === 2) {
-    //   setTitle("Borrow history")
-    // } else {
-    //   setTitle("Borrow activities")
-    // }
   };
 
   useEffect(() => {
@@ -87,7 +72,7 @@ const BookLoan = () => {
     } else {
       setTitle("Borrow activities")
     }
-  })
+  }, [user, value])
 
   
   return (
@@ -151,4 +136,4 @@ const BookLoan = () => {
   );
 }
 
-export default BookLoan
+export default BookLoan;

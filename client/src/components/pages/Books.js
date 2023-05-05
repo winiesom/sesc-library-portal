@@ -75,13 +75,10 @@ const Books = () => {
   const [loading, setLoading] = useState(false);
   const [serverError, setServerError] = useState(false);
   const [serverSuccess, setServerSuccess] = useState(false);
-  // const [page, setPage] = useState(0);
-  // const [pagesize, setPagesize] = useState(10);
   const [search, setSearch] = useState("");
   const { message } = useSelector((state) => state.message);
   const { user } = useSelector((state) => state.auth);
   const books = useSelector((state) => state.books.data);
-  const {borrowed} = useSelector((state) => state.borrowedBooks);
 
   const dispatch = useDispatch();
 
