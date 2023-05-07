@@ -76,5 +76,4 @@ The application is written in Node.js using the express framework.
     6. From the server directory, run the following commands in seperate terminals:
         `npm install`
         `npm start`
-        `npm run test`
 
