@@ -41,6 +41,7 @@ The application is written in Node.js using the express framework.
 
 ### 2. Roles
 ### This application features two actors: Admin and Student.
+    * Open PGADMIN, go to the library database -> schema -> tables -> roles. Create two new roles and add the following fields(role, createdAt, updatedAt). Note: make sure the admin role has an id of 1 and the student role has an id of 2.
 ### Admin `role_id: 1` and Student `role_id: 2`
     * Create admin account by: 
         1. Making a post request using postman: http://localhost:8082/accounts. 
