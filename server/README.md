@@ -40,6 +40,7 @@ The application is written in Node.js using the express framework.
 
 
 ### 2. Roles
+### Note: create the roles and admin account, add books using admin account because the student account depends on the books added by the admin in other to be able to view/borrow books and carry out other actions.
 ### This application features two actors: Admin and Student.
     * Open PGADMIN, go to the library database -> schema -> tables -> roles. Create two new roles and add the following fields(role, createdAt, updatedAt). Note: make sure the admin role has an id of 1 and the student role has an id of 2.
 ### Admin `role_id: 1` and Student `role_id: 2`

@@ -123,8 +123,6 @@ const Overdue = () => {
         return null
     }
   }).filter(item => item !== null && item.overdue !== "");
-
-  console.log(getBorrowedBooksWithDetails, 'getBorrowedBooksWithDetails')
     
   
   useEffect(() => {

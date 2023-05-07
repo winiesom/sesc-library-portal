@@ -139,7 +139,6 @@ const Borrow = ({row}) => {
         />
           <Snackbars
           variant="error"
-          // handleClose={handleCloseIsbnSnack}
           message="No book with such ISBN"
           isOpen={isbnError}
         />
@@ -154,7 +153,6 @@ const Borrow = ({row}) => {
           size="small"
           aria-label="add"
           className="action-fab"
-          // onClick={handleClose}
         >
           <OutboxIcon style={{width:20, height:20}} className="fab-icon" />
           </Fab>

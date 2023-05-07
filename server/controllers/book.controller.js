@@ -155,7 +155,6 @@ self.updateBook = async (req, res) => {
     const updatedBookRecord = await book.findOne({ where: { id } });
     return res.json(updatedBookRecord);
   } catch (error) {
-    console.log(error)
     return res.status(500).json({
       message: "Internal server error",
       error: error.message

@@ -87,8 +87,6 @@ const AddBook = () => {
           const result = res !== "" || res !== undefined || res !== null || res !== [] ? res : []
           setIsbnLoading(false)
           setIsbnResult(result && result.data[`ISBN:${search}`].details)
-          console.log(res)
-          console.log(isbnResult, 'isbn result')
         } catch (error) {
           console.error(error);
         }
