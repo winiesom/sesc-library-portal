@@ -20,8 +20,6 @@ import {getBorrowedBooks} from '../../slices/borrowed';
 import { clearMessage } from  "../../slices/message";
 
 import AddBook from './AddBook';
-// import EditBook from './EditBook';
-// import DeleteBook from './DeleteBook';
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -52,9 +50,7 @@ const columns = [
   { id: 'sn', label: 'SN', align: 'left' },
   { id: 'isbn', label: 'ISBN', align: 'left', minWidth: 170 },
   { id: 'title', label: 'Title', align: 'left', minWidth: 220 },
-  { id: 'author', label: 'Author', align: 'left', minWidth: 170 },
-  // { id: 'year', label: 'Year', align: 'left' },
-  // { id: 'action', label: 'Action', align:'left' },
+  { id: 'author', label: 'Author', align: 'left', minWidth: 170 }
 ];
 const adminColumns = [
   { id: 'sn', label: 'SN', align: 'left' },
@@ -63,7 +59,6 @@ const adminColumns = [
   { id: 'author', label: 'Author', align: 'left', minWidth: 150 },
   { id: 'year', label: 'Year', align: 'left' },
   { id: 'copies', label: 'Copies', textAlign: "left"},
-  // { id: 'action', label: 'Action', align:'left' },
 ];
 
 function createData(sn, isbn, title, author, year, copies, action) {
@@ -75,13 +70,10 @@ const Books = () => {
   const [loading, setLoading] = useState(false);
   const [serverError, setServerError] = useState(false);
   const [serverSuccess, setServerSuccess] = useState(false);
-  // const [page, setPage] = useState(0);
-  // const [pagesize, setPagesize] = useState(10);
   const [search, setSearch] = useState("");
   const { message } = useSelector((state) => state.message);
   const { user } = useSelector((state) => state.auth);
   const books = useSelector((state) => state.books.data);
-  const {borrowed} = useSelector((state) => state.borrowedBooks);
 
   const dispatch = useDispatch();
 
@@ -104,62 +96,20 @@ const Books = () => {
         setServerSuccess(false);
         setServerError(true);
       });
-  // }, [dispatch, page, pagesize, search]);
   }, [dispatch, search]);
 
-  // useEffect(() => {
-  //   dispatch(getBorrowedBooks())
-  // },[dispatch]);
-
-  // const handleChangePage = () => {
-  //   let credentials = {
-  //     pagesize,
-  //     page: page + 1,
-  //     search: search,
-  //   };
-  //   setLoading(true);
-  //   dispatch(getBooks(credentials))
-  //     .unwrap()
-  //     .then(() => {
-  //       setLoading(false);
-  //     })
-  //     .catch(() => {
-  //       setLoading(false);
-  //       setServerError(true);
-  //     });
-  // };
-
-  // const getBorrowedBooksWithDetails = borrowed && borrowed.data.map((borrowed) => {
-  //   const book = books && books.data.rows.find((book) => book.id === borrowed.book_id);
-  //   if(book) {
-  //     return borrowed
-  //   } else {
-  //     return null
-  //   }
-  // })
-
-  // console.log(getBorrowedBooksWithDetails, 'getBorrowedBooksWithDetails in books')
-
-
-
-  // const handleChangeRowsPerPage = (event) => {
-  //   setPagesize(+event.target.value);
-  //   setPage(0);
-  // };
   
 
   const handleSearch = (e) => setSearch(e.target.value);
 
   const handleKeyUp = (e) => {
     if (e.keyCode === 13) {
-      // dispatch(getBooks({ page, pagesize, search: e.target.value }));
       dispatch(getBooks({ search: e.target.value }));
       setSearch(e.target.value);
     }
   };
 
   const handleClick = (e) =>
-    // dispatch(getBooks({ page, pagesize, search: e.target.value }));
     dispatch(getBooks({ search: e.target.value }));
 
   const handleCloseSnack = () => {
@@ -177,7 +127,6 @@ const Books = () => {
         row.author,
         user && user.data.role_id === 1 ? row.year : "" ,
         user && user.data.role_id === 1 ? row.copies : null,
-        // user && user.data.role_id === 2 ? <Borrow row={row} /> : ""
       );
     }): []
   : [];
@@ -201,12 +150,8 @@ const Books = () => {
       />
       
       <Grid container spacing={2}>
-        {/* { user && user.data.role_id === 1 ?  */}
         <Grid item xs={12} sm={12} md={4}> <div className="table-title">Books</div> </Grid> 
-        {/* // : 
-        // <Grid item xs={12} sm={12} md={6}> <div className="table-title">Books</div> </Grid> }
-         */}
-        {/* { user && user.data.role_id === 1 ?  */}
+       
         <Grid item xs={12} sm={12} md={4}>
           <input 
           type="search" 
@@ -220,20 +165,7 @@ const Books = () => {
           className="book-search"
           />
         </Grid> 
-        {/* : 
-        <Grid item xs={12} sm={12} md={6}>
-          <input 
-          type="search" 
-          id="search" 
-          name="search"
-          value={search}
-          onChange={handleSearch}
-          placeholder="Search"
-          onKeyUp={handleKeyUp}
-          onClick={handleClick}
-          className="book-search"
-          />
-        </Grid> } */}
+       
         
         { user && user.data.role_id === 1 ? 
         <Grid item xs={12} sm={12} md={4} display="flex" justifyContent="flex-end"> <AddBook /> </Grid> :  
@@ -316,15 +248,7 @@ const Books = () => {
           </Table>
           </TableContainer>
           <Divider />
-          {/* <TablePagination
-          rowsPerPageOptions={[5, 10, 20, 50, 100]}
-          component="div"
-          count={books && books.count}
-          rowsPerPage={pagesize}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-          /> */}
+          
           </Paper>
         </Grid>
       }

@@ -14,18 +14,18 @@
     padding: 25px 30px 30px 15px;
 }
 
-.login-container {
-    width: 300px;
-    height: 250px;
-    background-color: #ffffff;
-    position: absolute;
-    top:0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin: auto;
-    padding: 20px;
+@media only screen and (min-width:300px) and (max-width:600px) {
+    .reg-container {
+        width: 300px
+    }
 }
+@media only screen and (min-width:100px) and (max-width:299px) {
+    .reg-container {
+        width: 200px
+    }
+}
+
+
 
 .textfield-grid-container {
     padding: 0 !important;

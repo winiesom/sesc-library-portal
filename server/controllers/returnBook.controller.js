@@ -153,11 +153,7 @@ self.returnBook = async (req, res) => {
             
             const difference = today.diff(createdAt, 'days');
             const daysDiff = difference - max_days
-            
-            console.log(difference, 'diff')
-            console.log(max_days, 'max days')
-            console.log(difference - max_days, 'difference minus max days')
-            
+                        
             if(difference > max_days) {
                 const attemptedReturn = {
                     account_id,

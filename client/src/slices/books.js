@@ -4,10 +4,8 @@ import BooksService from "../services/book.service";
 
 export const books = createAsyncThunk(
   "books/get",
-  // async ({ page, pagesize, search }, thunkAPI) => {
   async ({ search }, thunkAPI) => {
     try {
-      // const response = await BooksService.getBooks(page, pagesize, search);
       const response = await BooksService.getBooks(search);
       return response.data;
     } catch (error) {

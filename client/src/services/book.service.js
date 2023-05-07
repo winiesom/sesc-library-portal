@@ -1,7 +1,6 @@
 import api from "../api/api";
 
 
-// const getBooks = (page, pagesize, search) => api.get(`books?page=${page}&pagesize=${pagesize}&search=${search}`);
 const getBooks = (search) => api.get(`books?search=${search}`);
 
 const addBook = (newBook) => api.post("books", newBook);

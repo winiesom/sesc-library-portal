@@ -1,36 +1,21 @@
-import React, {useState, useEffect, useMemo} from 'react';
-import { ThreeDots } from "react-loader-spinner";
-
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from 'react';
+import { useSelector } from "react-redux";
 
 import { Dialog, Fab, Grid, ListItemIcon, MenuItem } from "@mui/material";
 
-import { 
-  Close as CloseIcon, 
-  Info as InfoIcon 
-} from '@mui/icons-material';
+import { Close as CloseIcon, Info as InfoIcon } from '@mui/icons-material';
 
 import Snackbars from "../../../assets/snackbar";
-import { CustomButton } from "../../../assets/button"
-import { Colors } from "../../../assets/themes/colors"
-
-import { clearMessage } from "../../../slices/message";
 
 import "../../../styles/books.styles.css"
 import "../../../styles/common.styles.css"
-
-
-
 
 const OverdueDetails = ({row, invoiceRef}) => {
   const [open, setOpen] = useState(false);
   const [serverError, setServerError] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [loading, setLoading] = useState(false);
-//   const [invoice, setInvoice] = useState("");
   const { message } = useSelector((state) => state.message);
-  const { user } = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
+
   const handleClose = () => setOpen(false);
   const handleClickOpen = () => setOpen(true);
   const handleCloseSnack = () => setServerError(false);

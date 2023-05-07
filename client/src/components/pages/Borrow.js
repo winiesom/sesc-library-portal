@@ -1,31 +1,21 @@
-import React, {useState, useEffect, useMemo} from 'react';
+import React, { useState, useEffect } from 'react';
 import { ThreeDots } from "react-loader-spinner";
-
 import { useDispatch, useSelector } from "react-redux";
-
 import { Dialog, Fab, Grid, ListItemIcon, MenuItem } from "@mui/material";
 
-import { 
-  ReadMore as ReadMoreIcon, 
-  Close as CloseIcon, 
-  Outbox as OutboxIcon, 
-  Search
-} from '@mui/icons-material';
+import { ReadMore as ReadMoreIcon, Close as CloseIcon, Outbox as OutboxIcon } from '@mui/icons-material';
 import {PuffSpinner} from '../../assets/spinner';
 
-
 import Snackbars from "../../assets/snackbar";
-import { CustomButton } from "../../assets/button"
-import { Colors } from "../../assets/themes/colors"
+import { CustomButton } from "../../assets/button";
+import { Colors } from "../../assets/themes/colors";
 import {books as getBooks} from '../../slices/books';
 
-import {borrowBook, getBorrowedBooks} from "../../slices/borrowed"
+import {borrowBook, getBorrowedBooks} from "../../slices/borrowed";
 import { clearMessage } from "../../slices/message";
 
-import "../../styles/books.styles.css"
-import "../../styles/common.styles.css"
-
-
+import "../../styles/books.styles.css";
+import "../../styles/common.styles.css";
 
 
 const Borrow = ({row}) => {
@@ -47,13 +37,11 @@ const Borrow = ({row}) => {
   const handleClose = () => setOpen(false);
   const handleClickOpen = () => setOpen(true);
   const handleCloseSnack = () => setServerError(false);
-  const handleCloseIsbnSnack = () => setIsbnError(false);
   const handleSuccessClose = () => setSuccess(false);
 
 
   const handleSearchBook = async (e) => {
     const search = e.target.value;
-    // setBookIsbn(search)
     if (e.key === "Enter") {
       setIsbnLoading(true)
       try {
@@ -151,7 +139,6 @@ const Borrow = ({row}) => {
         />
           <Snackbars
           variant="error"
-          // handleClose={handleCloseIsbnSnack}
           message="No book with such ISBN"
           isOpen={isbnError}
         />
@@ -166,7 +153,6 @@ const Borrow = ({row}) => {
           size="small"
           aria-label="add"
           className="action-fab"
-          // onClick={handleClose}
         >
           <OutboxIcon style={{width:20, height:20}} className="fab-icon" />
           </Fab>

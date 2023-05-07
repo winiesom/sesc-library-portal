@@ -57,7 +57,6 @@ self.getAllStudent = async (req, res) => {
         let data = await borrow.findAll({
             where: {
                 account_id: req.account_id,
-                // returned: false
             }
         });
 
@@ -70,7 +69,6 @@ self.getAllStudent = async (req, res) => {
             })
         }
     } catch (error) {
-        console.log(error, 'errrry')
         res.status(400).json({
             success: false,
             error: error

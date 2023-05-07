@@ -9,7 +9,6 @@ export const generateInvoice = createAsyncThunk(
       const response = await ExternalService.generateAnInvoice(invoiceData);
       return response.data;
     } catch (error) {
-        console.log(error, 'slices invoice error')
       let message;
       
       thunkAPI.dispatch(setMessage(message));
